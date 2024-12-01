@@ -4,15 +4,13 @@ using WebApp.Models;
 
 namespace WebApp.Controllers;
 
+public enum Operator
+{
+    Add, Mul, Sub, Div
+}
+
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
         return View();
@@ -25,6 +23,23 @@ public class HomeController : Controller
     
     public IActionResult About()
     {
+        return View();
+    }
+    
+    public IActionResult Calculator(Operator op, double a, double b)
+    {
+        ViewBag.Op = op;
+        ViewBag.A = a;
+        ViewBag.B = b;
+        ViewBag.Result = op switch
+        {
+            Operator.Add => a + b,
+            Operator.Div => a / b,
+            Operator.Mul => a * b,
+            Operator.Sub => a - b,
+            _ => throw new ArgumentOutOfRangeException(nameof(op), op, null)
+        };
+        
         return View();
     }
 
