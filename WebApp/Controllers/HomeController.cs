@@ -26,19 +26,47 @@ public class HomeController : Controller
         return View();
     }
     
-    public IActionResult Calculator(Operator op, double a, double b)
+    public IActionResult Calculator(Operator? op, double? a, double? b)
     {
+        if (a == null || b == null)
+        {
+            ViewBag.Error = "Parametry a lub b nie może być równe null";
+            return View();
+        }
+
+        switch (op)
+        {
+            case Operator.Add:
+                ViewBag.Result = a + b;
+                break;
+            
+            case Operator.Mul:
+                ViewBag.Result = a * b;
+                break;
+            
+            case Operator.Sub:
+                ViewBag.Result = a - b;
+                break;
+            
+            case Operator.Div:
+                if (b == 0)
+                {
+                    ViewBag.Error = "Nie można dzielić przez zero";
+                    return View();
+                }
+
+                ViewBag.Result = a / b;
+                break;
+            
+            default:
+                ViewBag.Error = "Parameter op nie może być równy null";
+                return View();
+        }
+        
         ViewBag.Op = op;
         ViewBag.A = a;
         ViewBag.B = b;
-        ViewBag.Result = op switch
-        {
-            Operator.Add => a + b,
-            Operator.Div => a / b,
-            Operator.Mul => a * b,
-            Operator.Sub => a - b,
-            _ => throw new ArgumentOutOfRangeException(nameof(op), op, null)
-        };
+        ViewBag.Error = "";
         
         return View();
     }
