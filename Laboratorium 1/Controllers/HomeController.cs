@@ -23,6 +23,11 @@ public class HomeController : Controller
         return View();
     }
     
+    public IActionResult About()
+    {
+        return View();
+    }
+    
     public IActionResult Calculator(Operator op, double? a, double? b)
     {
         if (a == null || b == null)
