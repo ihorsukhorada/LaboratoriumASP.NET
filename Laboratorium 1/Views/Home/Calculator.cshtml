@@ -1,0 +1,12 @@
+﻿@{ 
+    ViewData["Title"] = "Calculator Page";
+}
+
+@if (ViewBag.Error != null)
+{ 
+    <p>@ViewBag.Error</p>
+}
+else
+{ 
+    <p>Wynik działania dla @ViewBag.A @ViewBag.Sign @ViewBag.B = @ViewBag.Result</p>
+}
