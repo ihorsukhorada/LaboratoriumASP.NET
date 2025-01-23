@@ -1,4 +1,6 @@
-﻿namespace Zaliczenie.Models;
+﻿using WebApp;
+
+namespace Zaliczenie.Models;
 
 public class CustomerOrdersViewModel
 {
@@ -10,5 +12,5 @@ public class CustomerOrdersViewModel
     
     public int OrderCount { get; set; }
     
-    public IEnumerable<CustomerOrderItemViewModel>? CustomerOrdersViewModels { get; set; }
+    public PagingListAsync<CustomerOrderItemViewModel> Data { get; set; }
 }

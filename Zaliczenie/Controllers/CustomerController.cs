@@ -44,18 +44,30 @@ public class CustomerController(GravityContext context) : Controller
         
         if (customer == null) return NotFound();
 
-        var orders = context.CustOrders.Where(co => co.CustomerId == id).Select(co => new CustomerOrderItemViewModel
-        {
-            OrderId = co.OrderId,
-            OrderDate = co.OrderDate
-        }).AsEnumerable();
+        var orderQuery = context.CustOrders.Where(co => co.CustomerId == id);
 
+        var paging = PagingListAsync<CustomerOrderItemViewModel>.Create(
+            (p, s) =>
+                orderQuery.Select(co => new CustomerOrderItemViewModel
+                    {
+                        OrderId = co.OrderId,
+                        OrderDate = co.OrderDate
+                    })
+                    .OrderBy(c => c.OrderId)
+                    .Skip((p - 1) * s)
+                    .Take(s)
+                    .AsAsyncEnumerable(),
+            orderQuery.Count(),
+            page,
+            size);
+        
         var model = new CustomerOrdersViewModel()
         {
             CustomerId = customer.CustomerId,
             FirstName = customer.FirstName,
             LastName = customer.LastName,
-            CustomerOrdersViewModels = orders
+            OrderCount = orderQuery.Count(),
+            Data = paging
         };
 
         return View(model);
