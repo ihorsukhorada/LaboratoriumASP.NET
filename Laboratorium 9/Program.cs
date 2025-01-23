@@ -23,7 +23,7 @@ public class Program
         app.UseStaticFiles();
 
         app.UseRouting();
-
+        app.UseMiddleware<LastVisitCookie>();
         app.UseAuthorization();
 
         app.MapControllerRoute(
