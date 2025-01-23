@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebApp;
 using WebApp.Models;
+using Zaliczenie.Models;
 using Zaliczenie.Models.Gravity;
 
 namespace Zaliczenie.Controllers;
@@ -43,6 +44,12 @@ public class CustomerController(GravityContext context) : Controller
         
         if (customer == null) return NotFound();
 
-        return View(context.CustOrders.Where(co => co.CustomerId == id).AsEnumerable());
+        var orders = context.CustOrders.Where(co => co.CustomerId == id).Select(co => new CustomerOrderItemViewModel
+        {
+            OrderId = co.OrderId,
+            OrderDate = co.OrderDate
+        }).AsEnumerable();
+
+        return View(orders);
     }
 }
