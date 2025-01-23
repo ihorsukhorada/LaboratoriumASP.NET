@@ -1,15 +1,25 @@
-﻿@model IEnumerable<Zaliczenie.Models.CustomerOrderItemViewModel>
+﻿@model Zaliczenie.Models.CustomerOrdersViewModel
 
 @{
     ViewData["Title"] = "Customer Orders";
 }
 
-@foreach (var item in Model)
+<div class="mb-3">
+    <h3>Orders of @Model.FirstName @Model.LastName</h3>
+</div>
+
+@if (Model.CustomerOrdersViewModels != null)
 {
-    <div>
-        @item.OrderId
+    <div class="list-group">
+    @foreach (var item in Model.CustomerOrdersViewModels)
+    {
+        <a href="#" class="list-group-item list-group-item-action">
+            #@item.OrderId <span class="text-muted">@item.OrderDate</span>
+        </a>
+    }
     </div>
-    <div>
-        @item.OrderDate
-    </div>
+}
+else
+{
+    <div>No orders</div>
 }

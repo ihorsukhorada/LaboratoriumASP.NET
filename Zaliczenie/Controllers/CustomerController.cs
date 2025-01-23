@@ -36,7 +36,7 @@ public class CustomerController(GravityContext context) : Controller
             size));
     }
 
-    public IActionResult CustomerOrders(int? id)
+    public IActionResult CustomerOrders(int? id, int page = 1, int size = 10)
     {
         if (id == null) return NotFound();
 
@@ -50,6 +50,14 @@ public class CustomerController(GravityContext context) : Controller
             OrderDate = co.OrderDate
         }).AsEnumerable();
 
-        return View(orders);
+        var model = new CustomerOrdersViewModel()
+        {
+            CustomerId = customer.CustomerId,
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            CustomerOrdersViewModels = orders
+        };
+
+        return View(model);
     }
 }
