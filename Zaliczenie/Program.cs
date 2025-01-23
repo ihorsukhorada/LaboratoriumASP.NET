@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Zaliczenie.Models.Gravity;
+
 namespace Zaliczenie;
 
 public class Program
@@ -8,6 +11,10 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
+        builder.Services.AddDbContext<GravityContext>(options =>
+        {
+            options.UseSqlite(builder.Configuration["GravityDatabase:ConnectionString"]);
+        });
 
         var app = builder.Build();
 

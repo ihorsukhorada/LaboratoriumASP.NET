@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Zaliczenie.Models.Gravity.CustOrder>
+
+@{
+    ViewData["Title"] = "Customer Orders";
+}
+
+@foreach (var item in Model)
+{
+    <div>
+        @item.OrderId
+    </div>
+    <div>
+        @item.OrderDate
+    </div>
+}

@@ -1,0 +1,94 @@
+﻿@model PagingListAsync<CustomerViewModel>
+
+@{
+    ViewData["Title"] = "Customer Page";
+    var token = CancellationToken.None;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetAsyncEnumerator(token).Current.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetAsyncEnumerator(token).Current.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetAsyncEnumerator(token).Current.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetAsyncEnumerator(token).Current.OrderCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Data.GetAsyncEnumerator(token).Current.CountryName)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @await foreach (var item in Model.Data.WithCancellation(token))
+    {
+        <tr>
+            <td>
+                @item.FirstName
+            </td>
+            <td>
+                @item.LastName
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                <a asp-area="" asp-controller="Customer" asp-action="CustomerOrders" asp-route-id=@item.Id>
+                    @item.OrderCount
+                </a>
+            </td>
+            <td>
+                @item.CountryName
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<nav aria-label="Customers page navigation"> 
+    <ul class="pagination"> 
+        @if (Model.IsPrevious) 
+        { 
+            <li class="page-item">
+                <a class="page-link" 
+                   asp-controller="Customer" 
+                   asp-action="Index" 
+                   asp-route-page="@(Model.Page - 1)" 
+                   asp-route-size="@Model.Size">
+                    Poprzednia
+                </a>
+            </li> 
+        } 
+        else 
+        { 
+            <li class="page-item disabled">
+                <a class="page-link">Poprzednia</a>
+            </li> 
+        } 
+        <li class="page-item disabled">
+            <a class="page-link" >@Model.Page</a>
+        </li> 
+        @if (Model.IsNext) 
+        { 
+            <li class="page-item">
+                <a class="page-link" 
+                   asp-controller="Customer" 
+                   asp-action="Index" 
+                   asp-route-page="@(Model.Page + 1)" 
+                   asp-route-size="@Model.Size">
+                    Następna
+                </a>
+            </li> 
+        } 
+        else 
+        { 
+            <li class="page-item disabled">
+                <a class="page-link">Następna</a>
+            </li> 
+        } 
+    </ul>
+</nav>
